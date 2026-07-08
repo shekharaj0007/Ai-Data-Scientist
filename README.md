@@ -4,6 +4,38 @@ An end-to-end pipeline that takes a raw CSV and produces a cleaned dataset,
 compared models, SHAP-based explanations, and a plain-English narrative —
 served through a FastAPI backend with a custom web dashboard.
 
+# 📸 Application Screenshots
+
+## 📊 Dashboard
+
+![Dashboard](assets/DASHBOARD.png)
+
+---
+
+## 📁 Data Studio
+
+![Data Studio](assets/DATA%20STUDIO.png)
+
+---
+
+## 🧠 Model Lab
+
+![Model Lab](assets/MODEL%20LAB.png)
+
+---
+
+## ⚡ AI Inference
+
+![Inference](assets/INFERENCE.png)
+
+---
+
+## 🚀 Deployment
+
+![Deployment](assets/DEPLOYMENT.png)
+
+---
+
 ## Architecture
 
 ```
