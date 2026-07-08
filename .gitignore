@@ -1,0 +1,7 @@
+uploads/
+models/
+monitoring/
+mlruns/
+__pycache__/
+*.pyc
+.env

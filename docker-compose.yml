@@ -1,0 +1,13 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - MLFLOW_TRACKING_URI=file:/app/mlruns
+    volumes:
+      - ./uploads:/app/uploads
+      - ./models:/app/models
+      - ./mlruns:/app/mlruns
+      - ./monitoring:/app/monitoring

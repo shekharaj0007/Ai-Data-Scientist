@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Data Scientist — Automated ML Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-logo">
+          <div class="brand-icon">AI</div>
+          <div>
+            <div class="brand-name">Data Scientist</div>
+            <div class="brand-tagline">Automated ML Platform</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">Platform</div>
+        <button class="nav-item active" data-page="overview">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/></svg>
+          Overview
+        </button>
+        <button class="nav-item" data-page="studio">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+          Data Studio
+        </button>
+        <button class="nav-item" data-page="models">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          Model Lab
+        </button>
+        <button class="nav-item" data-page="deploy">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/></svg>
+          Deployment
+        </button>
+        <button class="nav-item" data-page="predict">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Inference
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="status-row">
+          <span class="status-dot" id="api-status-dot"></span>
+          <span id="api-status-text">Checking API…</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="page-title" id="topbar-title">Overview</div>
+          <div class="page-subtitle" id="topbar-subtitle">Platform dashboard and pipeline status</div>
+        </div>
+        <span class="badge badge-info" id="run-badge" style="display:none">No active run</span>
+      </header>
+
+      <div class="content">
+        <!-- OVERVIEW -->
+        <section class="page active" id="page-overview">
+          <div class="pipeline" id="pipeline-overview"></div>
+          <div class="grid grid-3" style="margin-bottom:1.25rem">
+            <div class="card">
+              <div class="card-title">Upload & Profile</div>
+              <div class="card-desc">Drop a CSV and get instant schema quality reports — missing values, cardinality, and type inference.</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Train & Compare</div>
+              <div class="card-desc">Auto-detect task type, train multiple algorithms, and rank them on cross-validated metrics.</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Explain & Deploy</div>
+              <div class="card-desc">SHAP feature importance, LLM summaries, human approval gate, and production inference.</div>
+            </div>
+          </div>
+          <div id="overview-stats"></div>
+        </section>
+
+        <!-- DATA STUDIO -->
+        <section class="page" id="page-studio">
+          <div class="pipeline" id="pipeline-studio"></div>
+          <div id="use-case-banner" style="display:none;margin-bottom:1rem"></div>
+          <div class="split">
+            <div>
+              <div class="card">
+                <div class="card-header">
+                  <div>
+                    <div class="card-title">Upload dataset</div>
+                    <div class="card-desc">CSV files up to any reasonable size. Data stays on your machine.</div>
+                  </div>
+                </div>
+                <div class="upload-zone" id="upload-zone">
+                  <input type="file" id="file-input" accept=".csv" />
+                  <div class="upload-icon">📁</div>
+                  <div class="upload-title">Drag & drop your CSV here</div>
+                  <div class="upload-hint">or click to browse files</div>
+                  <div class="upload-filename" id="upload-filename"></div>
+                </div>
+
+                <div class="form-group" style="margin-top:1.25rem">
+                  <label class="form-label" for="target-col">Target column</label>
+                  <select class="form-select" id="target-col">
+                    <option value="">— Unsupervised (clustering) —</option>
+                  </select>
+                  <p class="card-desc" id="target-hint" style="margin-top:0.5rem">
+                    The column you want to <strong>predict</strong> (e.g. Churn = Yes/No). 
+                    Do not pick ID columns like Id or UUID. Leave blank to group similar rows without a target.
+                  </p>
+                  <div id="target-warning" style="display:none;margin-top:0.5rem"></div>
+                </div>
+
+                <div class="toggle-row">
+                  <div>
+                    <div class="form-label" style="margin:0">LLM insights</div>
+                    <div class="card-desc">Feature suggestions & plain-English SHAP summary</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" id="use-llm" checked />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+
+                <button class="btn btn-primary btn-block" id="run-pipeline" disabled style="margin-top:0.5rem">
+                  Run full pipeline
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <div class="card" id="profile-card">
+                <div class="card-header">
+                  <div>
+                    <div class="card-title">Dataset profile</div>
+                    <div class="card-desc">Quality snapshot after upload</div>
+                  </div>
+                </div>
+                <div id="profile-content">
+                  <div class="empty">
+                    <div class="empty-icon">📊</div>
+                    <div class="empty-title">No dataset loaded</div>
+                    <div class="empty-desc">Upload a CSV to see profiling results</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODEL LAB -->
+        <section class="page" id="page-models">
+          <div class="pipeline" id="pipeline-models"></div>
+          <div id="models-content">
+            <div class="empty">
+              <div class="empty-icon">🧪</div>
+              <div class="empty-title">No analysis yet</div>
+              <div class="empty-desc">Run the pipeline in Data Studio to see model results</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- DEPLOYMENT -->
+        <section class="page" id="page-deploy">
+          <div class="pipeline" id="pipeline-deploy"></div>
+          <div id="deploy-content">
+            <div class="empty">
+              <div class="empty-icon">🚀</div>
+              <div class="empty-title">Nothing staged</div>
+              <div class="empty-desc">Complete an analysis run before deploying</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- INFERENCE -->
+        <section class="page" id="page-predict">
+          <div class="pipeline" id="pipeline-predict"></div>
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Batch prediction</div>
+                <div class="card-desc">Send raw customer records as JSON. The model applies preprocessing, returns predictions, churn risk, and retention actions.</div>
+              </div>
+            </div>
+            <div id="predict-alert"></div>
+            <p class="card-desc" id="predict-schema-hint" style="margin-bottom:0.75rem">Deploy a model to load the required input schema.</p>
+            <div class="form-group">
+              <label class="form-label" for="predict-json">Request payload</label>
+              <textarea class="form-textarea" id="predict-json" rows="8">[]</textarea>
+            </div>
+            <button class="btn btn-primary" id="run-predict">Run prediction</button>
+            <button class="btn btn-secondary" id="load-sample-batch" style="margin-left:0.5rem">Load sample batch</button>
+            <button class="btn btn-secondary" id="export-report" style="margin-left:0.5rem">Export CSV report</button>
+            <div id="predict-results" style="margin-top:1.25rem"></div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="loading-overlay" id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text" id="loading-text">Processing…</div>
+  </div>
+
+  <div class="toast-container" id="toasts"></div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
