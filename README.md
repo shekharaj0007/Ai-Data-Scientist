@@ -1,5 +1,7 @@
 # AI Data Scientist
 
+Live Deployment at https://ai-data-scientist-vdxv.onrender.com
+
 An end-to-end pipeline that takes a raw CSV and produces a cleaned dataset,
 compared models, SHAP-based explanations, and a plain-English narrative —
 served through a FastAPI backend with a custom web dashboard.
